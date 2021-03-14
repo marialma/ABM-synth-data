@@ -16,18 +16,15 @@ g <- 273 # gestation
 
 preg_rate <- 1/365  #rate of pregnancy.  i'm just gonna say that this population will gt pregnant in a year
 
-dt <- .5
+dt <- 1
 tmax <- 365*2
 steps <- tmax/dt
 
 
-
-health_states <- c("O", "P") #, "M", "C", "H", "D")
+health_states <- c("O", "P", "B") #, "M", "C", "H", "D")
 health_states_t0 <- rep("O", N) # everyone starts off not pregnant
 
-P0 <- 1
-health_states_t0[1] <- "P"
-
+#P0 <- 0
 # States
 # N = nOt pregnant, P = Pregnant, M = miscarried, C = faCility birth, H = Home birth D = death
 health <- CategoricalVariable$new(categories = health_states,initial_values = health_states_t0)
@@ -58,9 +55,9 @@ health <- CategoricalVariable$new(categories = health_states,initial_values = he
 # At birth, mother will either have a facility delivery or not.
 
 # If a facility delivery + danger signs, death risk is lower. 
+birth_timer_t0 <- rep(273, N)
 
-
-
+birth_timer <- IntegerVariable$new(birth_timer_t0)
 
 # Processes
 
@@ -72,8 +69,25 @@ pregnancy_process <- function(timestep) {
   health$queue_update(value = "P",index = O)
   
 }
+# miscarriage_process <- 
 
-#birth_outcome_process <- function(timestep) {}
+being_pregnant <- function(timestep){
+  number_pregnant <- health$get_size_of("P")
+  P <- health$get_index_of("P")
+  birth_timer$queue_update(rep(birth_timer-1, number_pregnant), index = P)
+}
+
+birth_process <- function(timestep) {
+  B <- health$get_size_of("P")
+  P <- health$get_index_of("P")
+  birth_timer$get_index_of(set = birth_timer, a = 0, b = 10)
+  health$queue_update(value = "B",index = P)
+  
+  
+}
+
+
+#birth_outcome_process <- function(timestep) {} 
 
 # death_process <- function(timestep){}
 
@@ -81,6 +95,11 @@ pregnancy_process <- function(timestep) {
 pregnancy_event <- TargetedEvent$new(population_size = N)
 pregnancy_event$add_listener(function(t, target) {
   health$queue_update('P', target)
+})
+
+birth_event <- TargetedEvent$new(population_size = N)
+birth_event$add_listener(function(t, target) {
+  health$queue_update('B', target)
 })
 
 
@@ -95,9 +114,9 @@ health_render_process <- categorical_count_renderer_process(
 
 
 simulation_loop(
-  variables = list(health),
-  processes = list(pregnancy_process, health_render_process),
-  events = list(pregnancy_event),
+  variables = list(health, birth_timer),
+  processes = list(pregnancy_process, being_pregnant, birth_process, health_render_process),
+  events = list(pregnancy_event, birth_event),
   timesteps=365*2
 )
 
@@ -116,6 +135,8 @@ legend(
   legend = health_states, cex = 1.5
 )
 
+
+# 
 
 # ref
 # https://bmcpublichealth.biomedcentral.com/articles/10.1186/s12889-018-5695-z/tables/4
