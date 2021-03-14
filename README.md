@@ -21,7 +21,7 @@ goal is synthetic health data in a rural community health setting
 
 
 
-# log
+## log
 * 2020-03-14 - pregnancies, births, miscarriages are modeled. 
 
 
@@ -32,5 +32,5 @@ goal is synthetic health data in a rural community health setting
   *  limitation: paper assumes no interaction btw variables. obvs not true given that wealth + education are usually correlated. but whatever this is the best data i have right now anyway
 
 
-* [Population Division of the United Nations Department of Economic and Social Affairs. Potential impact of later childbearing on future population. (2019)] (https://www.un.org/en/development/desa/population/publications/pdf/popfacts/PopFacts_2019-5.pdf)
+* [Population Division of the United Nations Department of Economic and Social Affairs. Potential impact of later childbearing on future population.(2019)] (https://www.un.org/en/development/desa/population/publications/pdf/popfacts/PopFacts_2019-5.pdf)
 

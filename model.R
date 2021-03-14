@@ -115,8 +115,6 @@ simulation_loop(
 )
 
 
-
-
 states <- health_render$to_dataframe()
 
 library(ggplot2)
@@ -125,6 +123,7 @@ states %>%
   gather(state, var, -timestep) %>% 
   ggplot() + geom_line(aes(x=timestep, y= var, color = state))
  
+ggsave("2020-03-14_model_in_progress.png", height = 4, width = 6)
 
 # health_cols <-  c("royalblue3","firebrick3","darkorchid3", "black")
 # matplot(
