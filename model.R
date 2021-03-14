@@ -1,7 +1,7 @@
 #library('remotes')
 #install_github('mrc-ide/individual')
 
-
+library(individual)
 #https://github.com/mrc-ide/individual
 # thanks, sean
 
@@ -9,27 +9,47 @@
 # Modeling 100 mothers & birth outcomes.
 # Everyone in this model will become pregnant over 5 years? 
 
-population <- 100
+# Constants
+
+N <- 100
+g <- 273 # gestation
+
+preg_rate <- 1/365  #rate of pregnancy.  i'm just gonna say that this population will gt pregnant in a year
+
+dt <- .5
+tmax <- 365*2
+steps <- tmax/dt
+
+
+
+health_states <- c("O", "P") #, "M", "C", "H", "D")
+health_states_t0 <- rep("O", N) # everyone starts off not pregnant
+
+P0 <- 1
+health_states_t0[1] <- "P"
 
 # States
-N <- State$new('N', population) # Not pregnant
-P <- State$new('P', 0) # Pregnant
-M <- State$new('M', 0) # Miscarriage
-B <- State$new('B', 0) # Birth
-C <- State$new('C', 0) # faCility
-H <- State$new('H', 0) # Home birth
-D <- State$new('D', 0) # Death
+# N = nOt pregnant, P = Pregnant, M = miscarried, C = faCility birth, H = Home birth D = death
+health <- CategoricalVariable$new(categories = health_states,initial_values = health_states_t0)
 
 
+#age <- IntegerVariable$new(runif(N, 15, 51)) # should i just make this categorical? 
+#wealth_quintile <- IntegerVariable$new(runif(N, 1,5)) 
+#education <- IntegerVariable$new(runif(N, 0,1)) # 0 = no education, 1 = education 
+#gets_ANC_visits
+#existing_kids <- 
+  
+# vars
 # let's say all 100 mothers are prgnant in a year, on average, so risk f pregnancy is 1/365
 # every day, the mother risks developing danger signs
 # younger mothers + older mothers are at higher risk for danger signs
 # mothers who have never given birth before are at higher risk for danger signs 
 
+
 # so, age is var, then if age < 17 & age > 35, danger sign risk is higher
 
-# model parity based on age, eg, would not expect a 17 year old to have 3 kids. 
-# parity = pick a number from a dist * age? - prob want something with a long tail? 
+# model multiparous based on age, eg, would not expect a 17 year old to have 3 kids. 
+#  = pick a number from a dist * age? - prob want something with a long tail? 
 # how do i model how many kids someone might have
 
 
@@ -39,27 +59,69 @@ D <- State$new('D', 0) # Death
 
 # If a facility delivery + danger signs, death risk is lower. 
 
-# parity <- Variable$new(‘parity’, runif ( 0, 4)? )
 
 
-# Individuals
-human <- Individual$new(
-  'human',
-  list(N, P, M, B, C, H, D),
-  variables = list(danger_signs, facility_birth)
+
+# Processes
+
+pregnancy_process <- function(timestep) {
+  
+  P <- health$get_size_of("O")
+  O <- health$get_index_of("O")
+  O$sample(rate = pexp(q = preg_rate))
+  health$queue_update(value = "P",index = O)
+  
+}
+
+#birth_outcome_process <- function(timestep) {}
+
+# death_process <- function(timestep){}
+
+
+pregnancy_event <- TargetedEvent$new(population_size = N)
+pregnancy_event$add_listener(function(t, target) {
+  health$queue_update('P', target)
+})
+
+
+health_render <- Render$new(timesteps = steps)
+health_render_process <- categorical_count_renderer_process(
+  renderer = health_render,
+  variable = health,
+  categories = health_states
 )
 
-pregnancy_event <- Event$new('pregnancy')
 
 
 
+simulation_loop(
+  variables = list(health),
+  processes = list(pregnancy_process, health_render_process),
+  events = list(pregnancy_event),
+  timesteps=365*2
+)
 
 
-miscarriage_event <- Event$new('miscarriage')
 
-birth_event <- Event$new('birth')
+states <- health_render$to_dataframe()
+health_cols <-  c("royalblue3","firebrick3","darkorchid3")
+matplot(
+  x = states[[1]]*dt, y = states[-1],
+  type="l",lwd=2,lty = 1,col = adjustcolor(col = health_cols, alpha.f = 0.85),
+  xlab = "Time",ylab = "Count"
+)
+legend(
+  x = "topright",pch = rep(16,3),
+  col = health_cols,bg = "transparent",
+  legend = health_states, cex = 1.5
+)
 
-facility_birth_event <- Event$new('facility')
 
-death_event <- Event$new('death')
+# ref
+# https://bmcpublichealth.biomedcentral.com/articles/10.1186/s12889-018-5695-z/tables/4
+# limitation: paper assumes no interaction btw variables
 
+
+# https://www.un.org/en/development/desa/population/publications/pdf/popfacts/PopFacts_2019-5.pdf
+#
+#
