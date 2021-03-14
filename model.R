@@ -71,7 +71,7 @@ pregnancy_process <- function(timestep) {
 }
 # miscarriage_process <- 
 
-birth_timer <- function(timestep) {
+birth_process <- function(timestep) {
   pregnant_people <- health$get_index_of("P")
   birth_update <- birth_timer$get_values(index = pregnant_people)
   birth_update <- birth_update - 1
@@ -81,7 +81,7 @@ birth_timer <- function(timestep) {
 
 birth <- function(timestep) {
   ready_to_birth <- birth_timer$get_index_of(set = c(0))
-  health$queue_update(index = ready_to_birth, values = "B")
+  health$queue_update(index = ready_to_birth, value = "B")
 }
 
 # death_process <- function(timestep){}
@@ -92,10 +92,6 @@ pregnancy_event$add_listener(function(t, target) {
   health$queue_update('P', target)
 })
 
-birth_event <- TargetedEvent$new(population_size = N)
-birth_event$add_listener(function(t, target) {
-  health$queue_update('B', target)
-})
 
 
 health_render <- Render$new(timesteps = steps)
@@ -109,7 +105,7 @@ health_render_process <- categorical_count_renderer_process(
 
 simulation_loop(
   variables = list(health),
-  processes = list(pregnancy_process, birth_timer, birth, health_render_process),
+  processes = list(pregnancy_process, birth_process, birth, health_render_process),
   events = list(pregnancy_event),
   timesteps=365*2
 )
