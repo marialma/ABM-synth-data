@@ -8,10 +8,10 @@ Generating synthetic health data with an agent based model
 Goal is synthetic health data in a rural community health setting.
 What I want to use this for is to generate fake patients so i can build tools without using real health data.
 
-# Actual code is in pregnancy_model.R
-
 ## maternal health outcomes
 using maternal health outcomes as a test case. see dag.png
+
+`pregnancy_model.R` is the current model. It's a fairly basic and straightforward agent based model.
 
 
 ## to do
@@ -20,12 +20,13 @@ using maternal health outcomes as a test case. see dag.png
   * add deaths
 * model each ANC visit?
 * ~~figure out how to get it to give me the state of each individual at each timestep instead of the number of individuals in each state~~
+* read up on interoperability and put this into HL7 format lmao
 
 
 ## log
 * 2020-03-14 - pregnancies, births, miscarriages are modeled.
 * 2021-02-09 - scrapped using individual package; modeling using other means instead for flexibility. I think this is necessary to generate data that looks like it could conceivably be medical record data.
-* 2021-02-09 - added in facility birth
+* 2021-02-09 - added in facility births
 
 
 
