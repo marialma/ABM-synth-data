@@ -47,6 +47,9 @@ health_states_t0 <- rep("O", N) # everyone starts off not pregnant
 
 birth_timer_t0 <- floor(rnorm(N, mean = 258, sd = 15))
 
+
+# miscarriage rate
+# danger signs 
 miscarriage_rate <- runif(N, min = 0, max = 1)
 miscarriage_rate <- miscarriage_rate < 0.15
 miscarriage_date <- sample(0:273, N, replace = TRUE)
@@ -56,6 +59,7 @@ status_change_record <- data.frame(person_id = rep(1:100), pregnant = 0, birth =
 for(day in 1:tmax) {
   for(number in 1:N){
     current_state <- health_states_t0[number]
+    
     if(current_state == "O") {
       got_pregnant <- runif(1, min = 0, max = 1) < preg_rate
       if(got_pregnant == TRUE ) {

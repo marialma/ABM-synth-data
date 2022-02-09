@@ -1,7 +1,7 @@
 #library('remotes')
 #install_github('mrc-ide/individual')
 
-library(individual)
+#library(individual)
 #https://github.com/mrc-ide/individual
 # thanks, sean
 
