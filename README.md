@@ -2,37 +2,31 @@
 Generating synthetic health data with an agent based model
 
 
-[Synthea](https://github.com/synthetichealth/synthea) is great if you have/ want really in depth patient records. But, sometimes you don't get stuff in that much detail. This is an attempt to generate synthetic health data for settings where you kinda don't have that much information. 
+[Synthea](https://github.com/synthetichealth/synthea) is great if you have/ want really in depth patient records. But, sometimes you don't get stuff in that much detail. This is an attempt to generate synthetic health data for settings where you kinda don't have that much information.
 
 
-goal is synthetic health data in a rural community health setting. 
-what i want to use this for is to generate fake patients so i can build tools without using real health data. 
+Goal is synthetic health data in a rural community health setting.
+What I want to use this for is to generate fake patients so i can build tools without using real health data.
 
-# mrc-ide/individual
-thanks to the team behind [individual](https://mrc-ide.github.io/individual/), for making a neato package
+
 
 ## maternal health outcomes
 using maternal health outcomes as a test case. see dag.png
 
 
-
-## to do 
-* add in age, wealth, education, health visits & kids vars 
+## to do
+* add in age, wealth, education, health visits & kids vars
   * update birth into facility vs home births
-
-
 * add in danger signs + interaction with age + kids + health visits
   * add deaths
-
-
 * model each ANC visit?
 
-* figure out how to get it to give me the state of each individual at each timestep instead of the number of individuals in each state
+* ~~figure out how to get it to give me the state of each individual at each timestep instead of the number of individuals in each state~~
 
 
 ## log
-* 2020-03-14 - pregnancies, births, miscarriages are modeled. 
-
+* 2020-03-14 - pregnancies, births, miscarriages are modeled.
+* 2021-02-01 - scrapped using individual package; modeling using other means instead for flexibility. I think this is necessary to generate data that looks like it could conceivably be medical record data.
 
 
 
@@ -42,4 +36,3 @@ using maternal health outcomes as a test case. see dag.png
 
 
 * [Population Division of the United Nations Department of Economic and Social Affairs. Potential impact of later childbearing on future population.(2019)](https://www.un.org/en/development/desa/population/publications/pdf/popfacts/PopFacts_2019-5.pdf)
-
