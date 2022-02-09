@@ -15,18 +15,17 @@ using maternal health outcomes as a test case. see dag.png
 
 
 ## to do
-* add in age, wealth, education, health visits & kids vars
-  * update birth into facility vs home births
+* add in age, ~~wealth, education,~~ health visits & kids vars
 * add in danger signs + interaction with age + kids + health visits
   * add deaths
 * model each ANC visit?
-
 * ~~figure out how to get it to give me the state of each individual at each timestep instead of the number of individuals in each state~~
 
 
 ## log
 * 2020-03-14 - pregnancies, births, miscarriages are modeled.
-* 2021-02-01 - scrapped using individual package; modeling using other means instead for flexibility. I think this is necessary to generate data that looks like it could conceivably be medical record data.
+* 2021-02-09 - scrapped using individual package; modeling using other means instead for flexibility. I think this is necessary to generate data that looks like it could conceivably be medical record data.
+* 2021-02-09 - added in facility birth
 
 
 
