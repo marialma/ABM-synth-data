@@ -25,7 +25,7 @@ birth_timer_t0 <- floor(rnorm(N, mean = 258, sd = 15)) # figure out how to skew 
 # to do: add in age as a factor and so on
 miscarriage_rate <- runif(N, min = 0, max = 1)
 miscarriage_rate <- miscarriage_rate < 0.15
-miscarriage_date <- sample(30:273, N, replace = TRUE) # possibly rethink how to select miscarriage - base off birth timer instead?
+miscarriage_date <- sample(30:258, N, replace = TRUE) # possibly rethink how to select miscarriage - base off birth timer instead?
 
 status_change_record <- data.frame(person_id = rep(1:100), became_pregnant = NA, gave_birth = NA, had_miscarriage = NA)
 
@@ -63,6 +63,10 @@ for(day in 1:tmax) {
 }
 #
 
+table(health_states_t0)
+
+
+
 # Birth Outcomes
 base_facility_birth_rate <- 0.15
 ed = c(1,2.02) # ORs taken from BMC paper linked below.
@@ -97,7 +101,7 @@ status_change_record %>%
 
 # just obliterate some percentage of the records to simulate data missingness
 expected_percent_captured <- 0.4
-medical_records <- sample_n(med_rec, floor(nrow(med_rec) * expected_percent_captured)) %>% arrange(dates) 
+medical_records <- sample_n(med_rec, floor(nrow(med_rec) * expaected_percent_captured)) %>% arrange(dates) 
 
 write.csv(medical_records, "fake_medical_record_1.csv")
 

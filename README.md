@@ -11,7 +11,7 @@ What I want to use this for is to generate fake patients so i can build tools wi
 ## maternal health outcomes
 using maternal health outcomes as a test case. see dag.png
 
-`pregnancy_model.R` is the current model. It's a fairly basic and straightforward agent based model.
+`pregnancy_model.R` is the current model. It's a fairly basic and straightforward agent based model. It also throws away a large fraction of its records in order to simulate real life missing-ness of data. The output right now is "one line per visit".
 
 
 ## to do
