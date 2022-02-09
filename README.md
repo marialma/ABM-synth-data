@@ -8,7 +8,7 @@ Generating synthetic health data with an agent based model
 Goal is synthetic health data in a rural community health setting.
 What I want to use this for is to generate fake patients so i can build tools without using real health data.
 
-
+# Actual code is in pregnancy_model.R
 
 ## maternal health outcomes
 using maternal health outcomes as a test case. see dag.png
