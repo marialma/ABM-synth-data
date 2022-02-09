@@ -97,7 +97,7 @@ status_change_record %>%
 
 # just obliterate some percentage of the records to simulate data missingness
 expected_percent_captured <- 0.4
-medical_records <- sample_n(med_rec, floor(nrow(med_rec) * expected_percent_captured))
+medical_records <- sample_n(med_rec, floor(nrow(med_rec) * expected_percent_captured)) %>% arrange(dates) 
 
 write.csv(medical_records, "fake_medical_record_1.csv")
 
